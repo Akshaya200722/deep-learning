@@ -1,0 +1,61 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Dataset
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2, 4, 5, 4, 5])
+
+print(x, y)
+
+# Initialize parameters
+b0 = 0.0
+b1 = 0.0
+
+n_iter = 20
+learning_rate = 0.01
+
+# Prediction
+y_pred = b0 + b1 * x
+print("y_pred:", y_pred)
+
+# Loss
+loss = np.sum((y_pred - y) ** 2) / (2 * len(x))
+loss_history = []
+
+for i in range(n_iter):
+
+    y_pred = b0 + b1 * x
+
+    db0 = (1/len(x)) * np.sum(y_pred - y)
+    db1 = (1/len(x)) * np.sum((y_pred - y) * x)
+
+    b0 = b0 - learning_rate * db0
+    b1 = b1 - learning_rate * db1
+
+    loss = np.sum((y_pred - y) ** 2) / (2 * len(x))
+    loss_history.append(loss)
+
+print("b0:", b0)
+print("b1:", b1)
+
+# Plot
+plt.figure(figsize=(12,5))
+
+plt.subplot(1,2,1)
+plt.scatter(x, y, color='blue', label='Data')
+plt.plot(x, y_pred, 'r', linewidth=3, label='Regression Line')
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Simple Linear Regression")
+plt.legend()
+plt.grid(True)
+
+plt.subplot(1,2,2)
+plt.plot(loss_history, linewidth=3)
+plt.xlabel("Iteration")
+plt.ylabel("Loss (MSE)")
+plt.title("Loss Convergence")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
